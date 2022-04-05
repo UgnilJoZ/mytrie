@@ -22,13 +22,14 @@ impl TrieNode {
 
     fn get_suffixes<'a>(&'a self) -> Box<dyn Iterator<Item = String> + 'a> {
         if self.children.is_empty() {
+            // Empty node → empty iterator
             Box::new(Some(String::new()).into_iter())
         } else {
+            // Recursively iterate through the children if they contain something
             Box::new(
                 self.children
                     .iter()
-                    .map(|(c, n)| n.get_suffixes().map(|s| c.to_string() + &s))
-                    .flatten(),
+                    .flat_map(|(c, n)| n.get_suffixes().map(|s| c.to_string() + &s)),
             )
         }
     }
