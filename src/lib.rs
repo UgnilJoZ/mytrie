@@ -186,6 +186,21 @@ impl Trie {
             false
         }
     }
+
+    /// Returns true if the trie contains no content
+    /// 
+    /// Example:
+    /// ```
+    /// use mytrie::Trie;
+    /// 
+    /// let mut trie = Trie::default();
+    /// assert!(trie.is_empty());
+    /// trie.insert("");
+    /// assert!(!trie.is_empty());
+    /// ```
+    pub fn is_empty(&self) -> bool {
+        self.0.children.is_empty()
+    }
 }
 
 #[cfg(test)]
