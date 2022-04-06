@@ -16,7 +16,7 @@ impl TrieNode {
         if let Some(ch) = content.next() {
             self.children.get(&ch)?.get_node(content)
         } else {
-            Some(&self)
+            Some(self)
         }
     }
 
@@ -180,11 +180,7 @@ impl Trie {
     /// assert!(trie.contains_prefix(""));
     /// ```
     pub fn contains_prefix(&self, prefix: &str) -> bool {
-        if let Some(_) = self.0.get_node(prefix.chars()) {
-            true
-        } else {
-            false
-        }
+        self.0.get_node(prefix.chars()).is_some()
     }
 
     /// Returns true if the trie contains no content
