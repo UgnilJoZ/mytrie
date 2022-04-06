@@ -90,10 +90,10 @@ impl Trie {
     ///
     /// let trie = Trie::from(["Hello", "world"]);
     /// ```
-    pub fn from<'a>(content: impl IntoIterator<Item = &'a str>) -> Self {
+    pub fn from(content: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
         let mut trie = Trie::default();
         for s in content.into_iter() {
-            trie.insert(s)
+            trie.insert(s.as_ref())
         }
         trie
     }
