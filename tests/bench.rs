@@ -41,7 +41,9 @@ fn bench() {
 
     let begin = Instant::now();
     for item in samples.iter() {
-        trie.remove(item);
+        trie.remove(item).unwrap();
     }
     eprintln!("removing durated {} ms", begin.elapsed().as_millis());
+    
+    assert!(trie.is_empty())
 }

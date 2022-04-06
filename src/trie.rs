@@ -79,11 +79,11 @@ impl Trie {
     /// ```
     /// use mytrie::Trie;
     ///
-    /// let trie = Trie::from(["Hallo", "Hallöchen"]);
-    /// let mut suffixes: Vec<String> = trie.content_with_prefix("Hall").collect();
+    /// let trie = Trie::from(["Hallo", "Hallöchen", "Tschüs"]);
+    /// let mut content: Vec<String> = trie.content_with_prefix("Hall").collect();
     ///
-    /// suffixes.sort();
-    /// assert_eq!(suffixes, ["Hallo", "Hallöchen"]);
+    /// content.sort();
+    /// assert_eq!(content, ["Hallo", "Hallöchen"]);
     /// ```
     pub fn content_with_prefix<'a>(&'a self, prefix: &str) -> impl Iterator<Item = String> + 'a {
         let prefix = String::from(prefix);
