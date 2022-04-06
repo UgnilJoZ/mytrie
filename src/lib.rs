@@ -166,6 +166,26 @@ impl Trie {
         // We have to append the stop symbol again to make deletion successful
         self.0.remove(content.chars().chain(['\u{0}']));
     }
+
+    /// Checks if something with this prefix is in the trie
+    /// 
+    /// Example:
+    /// ```
+    /// use mytrie::Trie;
+    /// 
+    /// let trie = Trie::from(["Hallo", "Hallöchen", "Tschüs", "Hallo Welt"]);
+    /// assert!(trie.contains_prefix("Hall"));
+    /// assert!(trie.contains_prefix("Hallo"));
+    /// assert!(!trie.contains_prefix("ABC"));
+    /// assert!(trie.contains_prefix(""));
+    /// ```
+    pub fn contains_prefix(&self, prefix: &str) -> bool {
+        if let Some(_) = self.0.get_node(prefix.chars()) {
+            true
+        } else {
+            false
+        }
+    }
 }
 
 #[cfg(test)]
