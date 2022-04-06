@@ -34,15 +34,15 @@ impl TrieNode {
         }
     }
 
-    fn remove(&mut self, mut content: impl Iterator<Item = char>) {
+    fn remove(&mut self, mut content: impl Iterator<Item = char>) -> Option<()> {
         if let Some(ch) = content.next() {
-            if let Some(node) = self.children.get_mut(&ch) {
-                node.remove(content);
-                if node.children.is_empty() {
-                    self.children.remove(&ch);
-                }
+            let node = self.children.get_mut(&ch)?;
+            let _ = node.remove(content)?;
+            if node.children.is_empty() {
+                self.children.remove(&ch);
             }
         }
+        Some(())
     }
 }
 
@@ -160,19 +160,19 @@ impl Trie {
     /// use mytrie::Trie;
     ///
     /// let mut trie = Trie::from(["Hallo", "Hallöchen"]);
-    /// trie.remove("Hallo");
+    /// trie.remove("Hallo").unwrap();
     /// ```
-    pub fn remove(&mut self, content: &str) {
+    pub fn remove(&mut self, content: &str) -> Option<()> {
         // We have to append the stop symbol again to make deletion successful
-        self.0.remove(content.chars().chain(['\u{0}']));
+        self.0.remove(content.chars().chain(['\u{0}']))
     }
 
     /// Checks if something with this prefix is in the trie
-    /// 
+    ///
     /// Example:
     /// ```
     /// use mytrie::Trie;
-    /// 
+    ///
     /// let trie = Trie::from(["Hallo", "Hallöchen", "Tschüs", "Hallo Welt"]);
     /// assert!(trie.contains_prefix("Hall"));
     /// assert!(trie.contains_prefix("Hallo"));
@@ -188,11 +188,11 @@ impl Trie {
     }
 
     /// Returns true if the trie contains no content
-    /// 
+    ///
     /// Example:
     /// ```
     /// use mytrie::Trie;
-    /// 
+    ///
     /// let mut trie = Trie::default();
     /// assert!(trie.is_empty());
     /// trie.insert("");
