@@ -88,7 +88,7 @@ impl Trie {
     pub fn content_with_prefix<'a>(&'a self, prefix: &str) -> impl Iterator<Item = String> + 'a {
         let prefix = String::from(prefix);
         self.iter_suffixes(&prefix)
-            .map(move |suffix| prefix.clone() + &suffix)
+            .map(move |suffix| format!("{prefix}{suffix}"))
     }
 
     /// Remove a string from the trie

@@ -1,7 +1,11 @@
 [package]
 name = "mytrie"
+description = "Trie implmentation"
 version = "0.1.0"
 edition = "2021"
+license = "WTFPL"
+documentation = "https://docs.rs/mytrie/latest/mytrie/struct.Trie.html"
+homepage = "https://github.com/UgnilJoZ/mytrie"
 
 [dependencies]
 
