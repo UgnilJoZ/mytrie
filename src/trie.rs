@@ -64,13 +64,7 @@ impl Trie {
     /// ```
     pub fn iter_suffixes<'a>(&'a self, prefix: &str) -> impl Iterator<Item = String> + 'a {
         let node = self.0.get_node(prefix.chars());
-        SuffixIterator {
-            _node: node,
-            iter: match node {
-                Some(node) => node.get_suffixes(),
-                None => Box::new(None.into_iter()),
-            },
-        }
+        SuffixIterator::new(node)
     }
 
     /// Iterate all strings in the trie with this prefix
@@ -144,6 +138,21 @@ impl Trie {
 struct SuffixIterator<'a> {
     _node: Option<&'a TrieNode>,
     iter: Box<dyn Iterator<Item = String> + 'a>,
+}
+
+impl<'a> SuffixIterator<'a> {
+    /// Start a new iteration below `node`
+    ///
+    /// If `node` is None, the iterator will yield no element.
+    fn new(node: Option<&'a TrieNode>) -> Self {
+        SuffixIterator {
+            _node: node,
+            iter: match node {
+                Some(node) => node.iter_suffixes(),
+                None => Box::new(None.into_iter()),
+            },
+        }
+    }
 }
 
 impl Iterator for SuffixIterator<'_> {
