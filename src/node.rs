@@ -34,16 +34,17 @@ impl TrieNode {
         }
     }
 
-    pub fn get_suffixes<'a>(&'a self) -> Box<dyn Iterator<Item = String> + 'a> {
+    /// Iterate all content below this node
+    pub fn iter_suffixes<'a>(&'a self) -> Box<dyn Iterator<Item = String> + 'a> {
         if self.children.is_empty() {
-            // Empty node → empty iterator
+            // Empty node → empty string
             Box::new(Some(String::new()).into_iter())
         } else {
             // Recursively iterate through the children if they contain something
             Box::new(
                 self.children
                     .iter()
-                    .flat_map(|(c, n)| n.get_suffixes().map(|s| c.to_string() + &s)),
+                    .flat_map(|(c, n)| n.iter_suffixes().map(|s| c.to_string() + &s)),
             )
         }
     }

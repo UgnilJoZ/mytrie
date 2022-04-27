@@ -3,7 +3,7 @@ use crate::Trie;
 #[test]
 fn insert() {
     let trie = Trie::from(["Hallo", "Hallöchen!", "Tschüs!"]);
-    let mut suffixes: Vec<String> = trie.content_with_prefix("").collect();
+    let mut suffixes: Vec<String> = trie.iter_content("").collect();
     suffixes.sort();
     assert_eq!(
         vec![
@@ -18,7 +18,7 @@ fn insert() {
 #[test]
 fn prefix_query() {
     let trie = Trie::from(["Hallo", "Hallöchen!", "Tschüs!"]);
-    let mut suffixes: Vec<String> = trie.content_with_prefix("Hall").collect();
+    let mut suffixes: Vec<String> = trie.iter_content("Hall").collect();
     suffixes.sort();
     assert_eq!(
         vec![String::from("Hallo"), String::from("Hallöchen!")],
@@ -30,7 +30,7 @@ fn prefix_query() {
 fn remove_long() {
     let mut trie = Trie::from(["Hallo", "Hallöchen!", "Tschüs!"]);
     trie.remove("Hallöchen!");
-    let mut suffixes: Vec<String> = trie.content_with_prefix("").collect();
+    let mut suffixes: Vec<String> = trie.iter_content("").collect();
     suffixes.sort();
     assert_eq!(
         vec![String::from("Hallo"), String::from("Tschüs!")],

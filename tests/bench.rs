@@ -32,7 +32,7 @@ fn bench() {
     eprintln!("inserting durated {} ms", begin.elapsed().as_millis());
 
     let begin = Instant::now();
-    let mut retrieved_samples: Vec<String> = trie.content_with_prefix("").collect();
+    let mut retrieved_samples: Vec<String> = trie.iter_content("").collect();
     eprintln!("retrieving durated {} ms", begin.elapsed().as_millis());
 
     retrieved_samples.sort();
