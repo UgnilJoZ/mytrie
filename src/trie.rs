@@ -14,7 +14,7 @@ use crate::TrieNode;
 ///
 /// let mut trie = Trie::default();
 /// trie.insert("Hello World!");
-/// trie.remove("Hello World!");
+/// trie.remove("Hello World!").unwrap();
 /// ```
 #[derive(Default, Debug)]
 pub struct Trie(TrieNode);
