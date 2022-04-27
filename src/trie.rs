@@ -117,6 +117,20 @@ impl Trie {
         self.0.get_node(prefix.chars()).is_some()
     }
 
+    /// Checks if the specified string was inserted into the trie
+
+    /// Example:
+    /// ```
+    /// use mytrie::Trie;
+    ///
+    /// let trie = Trie::from(["Hallo"]);
+    /// assert!(!trie.contains("Hall"));
+    /// assert!(trie.contains("Hallo"));
+    /// ```
+    pub fn contains(&self, content: &str) -> bool {
+        self.0.get_node(content.chars().chain([STOP])).is_some()
+    }
+
     /// Returns true if the trie contains no content
     ///
     /// Example:
