@@ -50,7 +50,7 @@ impl Trie {
         self.0.insert(content.chars().chain([STOP]))
     }
 
-    /// Get all suffixes that follow this prefix
+    /// Iterate all suffixes that follow this prefix
     ///
     /// Example:
     /// ```
@@ -73,7 +73,7 @@ impl Trie {
         }
     }
 
-    /// Get all strings in the trie with this prefix
+    /// Iterate all strings in the trie with this prefix
     ///
     /// Example:
     /// ```
@@ -92,6 +92,9 @@ impl Trie {
     }
 
     /// Remove a string from the trie
+    ///
+    /// On successful removal, `Some(())` is returned.
+    /// If `content` was not present, `None` is returned.
     ///
     /// Example:
     /// ```
@@ -137,6 +140,7 @@ impl Trie {
     }
 }
 
+/// Iterate over all strings stored below the specified node
 struct SuffixIterator<'a> {
     _node: Option<&'a TrieNode>,
     iter: Box<dyn Iterator<Item = String> + 'a>,
