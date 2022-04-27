@@ -47,7 +47,7 @@ impl Trie {
     /// ```
     pub fn insert(&mut self, content: &str) {
         // Insert char sequence with a stop symbol
-        self.0.insert(content.chars().chain(['\u{0}']))
+        self.0.insert(content.chars().chain([STOP]))
     }
 
     /// Get all suffixes that follow this prefix
@@ -102,7 +102,7 @@ impl Trie {
     /// ```
     pub fn remove(&mut self, content: &str) -> Option<()> {
         // We have to append the stop symbol again to make deletion successful
-        self.0.remove(content.chars().chain(['\u{0}']))
+        self.0.remove(content.chars().chain([STOP]))
     }
 
     /// Checks if something with this prefix is in the trie
@@ -152,3 +152,7 @@ impl Iterator for SuffixIterator<'_> {
         Some(result)
     }
 }
+
+/// The stop symbol on which no character shall follow
+/// and which is appended while inserting
+const STOP: char = '\u{0}';
