@@ -43,7 +43,7 @@ impl TrieNode {
     pub fn remove(&mut self, mut content: impl Iterator<Item = char>) -> Option<()> {
         if let Some(ch) = content.next() {
             let node = self.children.get_mut(&ch)?;
-            let _ = node.remove(content)?;
+            node.remove(content)?;
             if node.children.is_empty() {
                 self.children.remove(&ch);
             }
