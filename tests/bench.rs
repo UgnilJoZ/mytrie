@@ -19,7 +19,7 @@ fn generate_samples(count: usize, length: Range<usize>, charset: &[char]) -> Vec
         .collect()
 }
 
-const COUNT: usize = 1_000;
+const COUNT: usize = 10_000;
 
 #[test]
 fn bench() {
