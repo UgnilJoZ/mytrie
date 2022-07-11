@@ -35,18 +35,8 @@ impl TrieNode {
     }
 
     /// Iterate all content below this node
-    pub fn iter_suffixes<'a>(&'a self) -> Box<dyn Iterator<Item = String> + 'a> {
-        if self.children.is_empty() {
-            // Empty node → empty string
-            Box::new(Some(String::new()).into_iter())
-        } else {
-            // Recursively iterate through the children if they contain something
-            Box::new(
-                self.children
-                    .iter()
-                    .flat_map(|(c, n)| n.iter_suffixes().map(|s| c.to_string() + &s)),
-            )
-        }
+    pub fn iter_content(& self) -> ChildIter {
+        ChildIter::new(self)
     }
 
     /// Remove the specified char sequence from below this node
@@ -59,5 +49,34 @@ impl TrieNode {
             }
         }
         Some(())
+    }
+}
+
+pub(crate) struct ChildIter<'a> {
+    remaining: Vec<(&'a TrieNode, String)>,
+}
+
+impl<'a> ChildIter<'a> {
+    fn new(node: &'a TrieNode) -> ChildIter<'a> {
+        ChildIter {
+            remaining: vec![(node, String::new())],
+        }
+    }
+}
+
+impl<'a> Iterator for ChildIter<'a> {
+    type Item = String;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some((node, s)) = self.remaining.pop() {
+            for (&ch, child) in &node.children {
+                let mut prefix = s.clone();
+                prefix.push(ch);
+                self.remaining.push((child, prefix));
+            }
+            Some(s)
+        } else {
+            None
+        }
     }
 }

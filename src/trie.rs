@@ -64,7 +64,10 @@ impl Trie {
     /// ```
     pub fn iter_suffixes<'a>(&'a self, prefix: &str) -> impl Iterator<Item = String> + 'a {
         let node = self.0.get_node(prefix.chars());
-        SuffixIterator::new(node)
+        SuffixIterator {
+            child_iter: node.map(|n| n.iter_content()),
+        }
+        .filter_map(|content| content.strip_suffix(STOP).map(str::to_string))
     }
 
     /// Iterate all strings in the trie with this prefix
@@ -149,33 +152,14 @@ impl Trie {
 
 /// Iterate over all strings stored below the specified node
 struct SuffixIterator<'a> {
-    _node: Option<&'a TrieNode>,
-    iter: Box<dyn Iterator<Item = String> + 'a>,
+    child_iter: Option<crate::node::ChildIter<'a>>,
 }
 
-impl<'a> SuffixIterator<'a> {
-    /// Start a new iteration below `node`
-    ///
-    /// If `node` is None, the iterator will yield no element.
-    fn new(node: Option<&'a TrieNode>) -> Self {
-        SuffixIterator {
-            _node: node,
-            iter: match node {
-                Some(node) => node.iter_suffixes(),
-                None => Box::new(None.into_iter()),
-            },
-        }
-    }
-}
-
-impl Iterator for SuffixIterator<'_> {
+impl<'a> Iterator for SuffixIterator<'a> {
     type Item = String;
 
-    fn next(&mut self) -> Option<String> {
-        let mut result = self.iter.next()?;
-        // Remove the stop symbol
-        let _ = result.pop();
-        Some(result)
+    fn next(&mut self) -> Option<Self::Item> {
+        self.child_iter.as_mut()?.next()
     }
 }
 
