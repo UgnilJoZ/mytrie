@@ -21,8 +21,7 @@ fn generate_samples(count: usize, length: Range<usize>, charset: &[char]) -> Vec
 
 const COUNT: usize = 10_000;
 
-#[test]
-fn bench() {
+fn main() {
     let charset: Vec<char> = "abcdefghijklnmopqrstuvwxyz".chars().collect();
     let mut samples = generate_samples(COUNT, 30..60, &charset);
     samples.sort();
