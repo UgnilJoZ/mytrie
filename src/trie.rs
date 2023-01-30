@@ -148,6 +148,28 @@ impl Trie {
     pub fn is_empty(&self) -> bool {
         self.0.children.is_empty()
     }
+
+    /// Remove everything that follows this suffix
+    ///
+    /// If a subtree was deleted, returns it. This will be another trie,
+    /// containing all those removed strings minus the prefix.
+    ///
+    /// An example for clarification:
+    /// ```
+    /// use mytrie::Trie;
+    ///
+    /// let mut trie = Trie::from(["Hallo", "Hallöchen", "Tschüs"]);
+    /// let removed: Trie = trie.remove_suffixes("Hal").unwrap();
+    /// let mut removed: Vec<String> = removed.iter_content("").collect();
+    /// removed.sort();
+    ///
+    /// assert_eq!(removed, vec!["lo", "löchen"]);
+    /// ```
+    pub fn remove_suffixes(&mut self, prefix: &str) -> Option<Self> {
+        self.0
+            .remove_suffixes(prefix.chars())
+            .map(|node| Trie(node))
+    }
 }
 
 /// Iterate over all strings stored below the specified node

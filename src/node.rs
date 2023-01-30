@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::hash_map::Entry;
 
 /// A node in a prefix tree
 ///
@@ -50,14 +51,39 @@ impl TrieNode {
         }
         Some(())
     }
+
+    /// Delete and return a node, if present
+    fn remove_node(&mut self, path: &[char]) -> Option<TrieNode> {
+        if let Some((&first, rest)) = path.split_first() {
+            match self.children.entry(first) {
+                Entry::Vacant(_) => None,
+                Entry::Occupied(e) => {
+                    if rest.is_empty() {
+                        Some(e.remove())
+                    } else {
+                        let node = e.into_mut();
+                        node.remove_node(rest)
+                    }
+                }
+            }
+        } else {
+            None
+        }
+    }
+
+    /// Remove all suffixes following this prefix, returning a subtree if the suffix was present
+    pub fn remove_suffixes(&mut self, mut prefix: impl Iterator<Item = char>) -> Option<TrieNode> {
+        let path: Vec<char> = prefix.collect();
+        self.remove_node(&path)
+    }
 }
 
 pub(crate) struct ChildIter<'a> {
     remaining: Vec<(&'a TrieNode, String)>,
 }
 
-impl<'a> ChildIter<'a> {
-    fn new(node: &'a TrieNode) -> ChildIter<'a> {
+impl ChildIter<'_> {
+    fn new(node: &TrieNode) -> ChildIter {
         ChildIter {
             remaining: vec![(node, String::new())],
         }
