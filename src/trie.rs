@@ -188,3 +188,15 @@ impl<'a> Iterator for SuffixIterator<'a> {
 /// The stop symbol on which no character shall follow
 /// and which is appended while inserting
 const STOP: char = '\u{0}';
+
+impl<S> FromIterator<S> for Trie
+where
+    S: AsRef<str>
+{
+    fn from_iter<T>(string_iter: T) -> Trie
+    where
+        T: IntoIterator<Item = S>
+    {
+        Trie::from(string_iter)
+    }
+}

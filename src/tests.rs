@@ -45,3 +45,9 @@ fn remove_nonexistent() {
     trie.remove("")
         .expect("content to remove is not present in trie");
 }
+
+#[test]
+fn from_iter() {
+    let _: Trie = ["aaa", "aab", "aac"].iter().collect();
+}
+
