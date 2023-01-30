@@ -52,6 +52,8 @@ impl Trie {
 
     /// Iterate all suffixes that follow this prefix
     ///
+    /// The order of iteration is arbitrary.
+    ///
     /// Example:
     /// ```
     /// use mytrie::Trie;
@@ -71,6 +73,8 @@ impl Trie {
     }
 
     /// Iterate all strings in the trie with this prefix
+    ///
+    /// The order of iteration is arbitrary.
     ///
     /// Example:
     /// ```
