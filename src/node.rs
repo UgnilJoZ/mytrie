@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use std::collections::hash_map::Entry;
+use std::collections::HashMap;
 
 /// A node in a prefix tree
 ///
@@ -36,7 +36,7 @@ impl TrieNode {
     }
 
     /// Iterate all content below this node
-    pub fn iter_content(& self) -> ChildIter {
+    pub fn iter_content(&self) -> ChildIter {
         ChildIter::new(self)
     }
 
@@ -72,7 +72,7 @@ impl TrieNode {
     }
 
     /// Remove all suffixes following this prefix, returning a subtree if the suffix was present
-    pub fn remove_suffixes(&mut self, mut prefix: impl Iterator<Item = char>) -> Option<TrieNode> {
+    pub fn remove_suffixes(&mut self, prefix: impl Iterator<Item = char>) -> Option<TrieNode> {
         let path: Vec<char> = prefix.collect();
         self.remove_node(&path)
     }

@@ -1,8 +1,8 @@
+use mytrie::Trie;
+use rand::distributions::{Distribution, Uniform};
+use rand::seq::SliceRandom;
 use std::ops::Range;
 use std::time::Instant;
-use mytrie::Trie;
-use rand::seq::SliceRandom;
-use rand::distributions::{Distribution, Uniform};
 
 fn generate_string(length: usize, charset: &[char]) -> String {
     let mut rng = &mut rand::thread_rng();
@@ -44,6 +44,6 @@ fn bench() {
         trie.remove(item).unwrap();
     }
     eprintln!("removing durated {} ms", begin.elapsed().as_millis());
-    
+
     assert!(trie.is_empty())
 }

@@ -166,9 +166,7 @@ impl Trie {
     /// assert_eq!(removed, vec!["lo", "löchen"]);
     /// ```
     pub fn remove_suffixes(&mut self, prefix: &str) -> Option<Self> {
-        self.0
-            .remove_suffixes(prefix.chars())
-            .map(|node| Trie(node))
+        self.0.remove_suffixes(prefix.chars()).map(Trie)
     }
 }
 
@@ -191,11 +189,11 @@ const STOP: char = '\u{0}';
 
 impl<S> FromIterator<S> for Trie
 where
-    S: AsRef<str>
+    S: AsRef<str>,
 {
     fn from_iter<T>(string_iter: T) -> Trie
     where
-        T: IntoIterator<Item = S>
+        T: IntoIterator<Item = S>,
     {
         Trie::from(string_iter)
     }

@@ -50,4 +50,3 @@ fn remove_nonexistent() {
 fn from_iter() {
     let _: Trie = ["aaa", "aab", "aac"].iter().collect();
 }
-
